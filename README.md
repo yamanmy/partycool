@@ -5,7 +5,6 @@ In addition, there is a visualization tools that can be used to plot the size di
 ### How to install
 ```
 conda install partycool
-matplotlib
 ```
 ### software dependencies
 * Python3
