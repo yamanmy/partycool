@@ -1,3 +1,5 @@
+Simple alteration
+
 # partycool
 ### Contributers:
 ### Release date:
