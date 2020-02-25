@@ -1,5 +1,5 @@
 # partycool
-### Contributers:
+### Contributers: Ximin Hu,
 ### Release date:
 particle size analysis software for all microscopy images
 =======
