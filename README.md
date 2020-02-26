@@ -19,6 +19,7 @@ In addition, there is a visualization tools that can be used to plot the size d$
 conda install partycool
 matplotlib
 Seanborn
+numpy
 ```
 ### software dependencies
 * Python3
