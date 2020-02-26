@@ -1,4 +1,4 @@
-def image_reader(image_path):
+def main_image_reader(image_path):
 	'''
 	Read the image as the format that can be treated with subsequent functions, typically 2D arrays
 	Function needed: image read, resize, data conversion into 2D array
@@ -6,7 +6,7 @@ def image_reader(image_path):
 	image_path: imput path for the image
 	'''
 
-def image_plotter(image_2d_array):
+def main_image_plotter(image_2d_array):
 	'''
 	Plot the image
 	'''
