@@ -9,6 +9,11 @@ This package can be used to analyze the particle size from microscopy images suc
 We will try to implement also the recignition of AFM images through Machine Learning.
 
 In addition, there is a visualization tools that can be used to plot the size distribution of the particles. 
+=======
+This package can be used to analyze the particle size from microscopy images su$
+We will try to implement also the recignition of AFM images through Machine Lea$
+
+In addition, there is a visualization tools that can be used to plot the size d$
 ### How to install
 ```
 conda install partycool
