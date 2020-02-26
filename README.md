@@ -6,6 +6,7 @@ In addition, there is a visualization tools that can be used to plot the size di
 ```
 conda install partycool
 matplotlib
+Seanborn
 ```
 ### software dependencies
 * Python3
