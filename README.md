@@ -1,5 +1,5 @@
 # This is my branch!
-# Just for a try aa
+# delete unrelevent information
 # partycool
 ### Contributers: Ximin Hu,
 ### Release date:
