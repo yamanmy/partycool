@@ -1,4 +1,3 @@
-# what language the build will be configured for
 language: python
 
 # specify what versions of python will be used
