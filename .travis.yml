@@ -20,8 +20,7 @@ before_install:
         
 # list of commands to run to setup the environment
 install:
-    - conda create -n test-environment -f environment.yml
-    - source activate test-environment
+    - pip install -r requirements.txt
     - conda install --yes coverage coveralls flake8
 
 # a list of commands to run before the main script
