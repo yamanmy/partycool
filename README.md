@@ -9,7 +9,9 @@ particle size analysis software for all microscopy images
 
 ## Organization of the project
 The project has the following structure:
-    partycool/
+   
+   
+   partycool/
       |- README.md
       |- partycool/
          |- __init__.py
