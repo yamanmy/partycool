@@ -4,7 +4,7 @@
 particle size analysis software for all microscopy images
 =======
 # Partycool ![Alt text](/example_images/partycool.jpg){ width: 100px; height: 200px}
-
+<img src="/example_images/partycool.jpg" width="100" height="200">
 ## Organization of the project
 The project has the following structure:
    
