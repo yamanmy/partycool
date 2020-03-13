@@ -67,6 +67,8 @@ def corner_detection(img):
     plt.show()
     return scalebar
 
+#Needed: Scale bar output -- output a number for the back calculation from pixel length to real length/area
+
 
 #Img pretreatment for contours
 def boundary_detection(img, thres = 20):
@@ -110,22 +112,23 @@ def img_cutter(img, thres = 20):
 
 
 #Contour detection and analysis module
+#Will be replaced by the watershed function
 def contour_capture(img, 
-                    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(9,9)), 
+                    #kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(9,9)), 
                     noise_factor = 4,
                     thresh_method = cv2.THRESH_BINARY,
-                    contour_thresh = 30):
+                    area_thresh = 500):
     '''
     The function captures the contours from the given imgs
     Returns contours and dilated img
     '''
     #img dilation
-    dilated = cv2.dilate(img, kernel)
-    _, threshold = cv2.threshold(dilated, dilated.max()/4, dilated.max(), thresh_method)
+    #dilated = cv2.dilate(img, kernel)
+    _, threshold = cv2.threshold(img, img.max()/4, img.max(), thresh_method)
     contours, _=cv2.findContours(threshold, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-    contours = [contour for contour in contours if len(contour) >= contour_thresh]
+    contours = [contour for contour in contours if cv2.contourArea(contour) >= area_thresh]
     
-    return contours, dilated
+    return contours, img
 
 
 def contour_summary(contours, hull = False):
