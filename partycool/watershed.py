@@ -1,11 +1,6 @@
 import numpy as np
 import cv2
-from matplotlib import pyplot as plt
-
-#Function to calculate the area of borders of two close objects
-#The watershed function needs the image and i which define how much of the area of the particle is considered.
-#The smaller the i, the larger would be the final boundaries
-#The larger the i, the smaller will be the final boundaries
+from matplotlib import pyplot as plt\
 
 def watershed(image, i):
     img_3channel = cv2.imread(image, 1)
@@ -27,4 +22,19 @@ def watershed(image, i):
     
     return plt.imshow(img)
     
+
+
+
+#Function to calculate the area of borders of two close objects
+#The watershed function needs the image and i which define how much of the area of the particle is considered.
+#The smaller the i, the larger would be the final boundaries
+#The larger the i, the smaller will be the final boundaries
+
+
+'''
+    The following part is incorporated into other modules, could use the output from those functions -- contour_capture or dilated_img
+    It will be better to have a preset i and including range of i in the function documentation
+'''
+
+
 
