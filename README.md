@@ -1,7 +1,7 @@
-# Particle Size Analysis Software for All Microscopy Images
+# Partycool <img src="/example_images/partycool_super_smaller.jpg">
+## Particle Size Analysis Package for All Microscopy Images 
 ### Contributers: Muammer yaman, Ximin Hu, Margherita Taddei, Yangwei Shi
 ### Release date:
-particle size analysis software for all microscopy images
 =======
 # Partycool                                   <img src="/example_images/partycool_super_smaller.jpg">
 
