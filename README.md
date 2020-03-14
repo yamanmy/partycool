@@ -7,7 +7,7 @@ particle size analysis software for all microscopy images
 
 
                                                      
-                                                    <img src="/example_images/partycool_smaller.jpg">
+   <img src="/example_images/partycool_smaller.jpg">
 
 
 
