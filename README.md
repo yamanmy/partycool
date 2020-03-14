@@ -1,12 +1,9 @@
-# This is my branch!
-# delete unrelevent information
 # partycool
-### Contributers: Ximin Hu,
+### Contributers: Muammer yaman, Ximin Hu, Margherita Taddei, Shiwei Yang
 ### Release date:
 particle size analysis software for all microscopy images
 =======
-# Partycool
-
+# Partycool                             <img src="/example_images/partycool.jpg" width="150" height="200">
 ## Organization of the project
 The project has the following structure:
    
@@ -52,12 +49,8 @@ We will try to implement also the recignition of AFM images through Machine Lear
 In addition, there is a visualization tools that can be used to plot the size distribution of the particles.
 ### How to install
 ```
-conda install partycool
-matplotlib
-Seanborn
-numpy
+pip install partycool
 ```
 ### software dependencies
 * Python3
 ### Organization of the project
-The project has the following structure:
