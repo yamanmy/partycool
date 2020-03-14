@@ -1,11 +1,12 @@
 import numpy as np
 import cv2
-from matplotlib import pyplot as plt
 
-from watershed.py import *
-
-#Test for the watershed function
+from watershed import *
 
 def test_watershed():
-	result = watershed('/Users/margheritataddei/Desktop/DIRECT/PROJECT/partycool/example_images/cut_images/sem_1_cut_zoom2.jpg', 0.1)
-	assert result == <matplotlib.image.AxesImage at 0x123c23650>, 'Wrong result'
+	image= 'example_images/cut_images/zoom/sem_2_cut_zoom.jpg'
+	result = watershed(image)
+	assert result.size == 8400, "Wrong size of the contours matrix"
+	assert result.shape == (80, 105), "Wrong shape of the countours matrix"
+
+#The end 
