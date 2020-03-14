@@ -1,5 +1,5 @@
-# partycool
-### Contributers: Muammer yaman, Ximin Hu, Margherita Taddei, Shiwei Yang
+# Particle Size Analysis Software for All Microscopy Images
+### Contributers: Muammer yaman, Ximin Hu, Margherita Taddei, Yangwei Shi
 ### Release date:
 particle size analysis software for all microscopy images
 =======
