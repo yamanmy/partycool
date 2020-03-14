@@ -1,13 +1,11 @@
 # Partycool <img src="/example_images/partycool_super_smaller.jpg">
 ## Particle Size Analysis Package for All Microscopy Images 
+This package can be used to analyze the particle size from microscopy images such as FEM, SEM images and optical microscopy.
+We will try to implement also the recignition of AFM images through Machine Learning.
+In addition, there is a visualization tools that can be used to plot the size distribution of the particles.
 ### Contributers: Muammer yaman, Ximin Hu, Margherita Taddei, Yangwei Shi
 ### Release date:
 =======
-# Partycool                                   <img src="/example_images/partycool_super_smaller.jpg">
-
-
-
-
 
 
 ## Organization of the project
@@ -48,11 +46,8 @@ The project has the following structure:
       |- test
 
 
-## Package for particle size analysis of all microscopy images
-This package can be used to analyze the particle size from microscopy images such as FEM, SEM images and optical microscopy.
-We will try to implement also the recignition of AFM images through Machine Learning.
 
-In addition, there is a visualization tools that can be used to plot the size distribution of the particles.
+
 ### How to install
 ```
 pip install partycool
