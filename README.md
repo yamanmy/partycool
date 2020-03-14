@@ -3,7 +3,7 @@
 ### Release date:
 particle size analysis software for all microscopy images
 =======
-# Partycool                                   <img src="/example_images/partycool_smaller.jpg" "width=100", "length=200">
+# Partycool                                   <img src="/example_images/partycool_smaller.jpg" "width=50", "length=100">
 
 
 
