@@ -3,7 +3,13 @@
 ### Release date:
 particle size analysis software for all microscopy images
 =======
-# Partycool                             <img src="/example_images/partycool.jpg" width="150" height="200">
+# Partycool                                   <img src="/example_images/partycool_smaller.jpg">
+
+
+
+
+
+
 ## Organization of the project
 The project has the following structure:
    
