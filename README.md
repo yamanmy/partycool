@@ -50,6 +50,6 @@ The project has the following structure:
 ```
 pip install partycool
 ```
-### software dependencies
+### Software dependencies
 * Python3
 ### Preview of the package
