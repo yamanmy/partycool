@@ -8,17 +8,21 @@ import cv2
 #After a lot of trials with different images we found out that the best contours are found when i is between 0.1 and 0.7, o_iter is between 1 and 5 and s_iter is between 1 and 2. 
 
 def watershed(image):
-    my_range = 0.7
+    my_range = np.arange(0.0, 0.7, 0.1)
     img_3channel = cv2.imread(image, 1)
     img = cv2.imread(image, 0)
     blur = cv2.GaussianBlur(img,(5,5),0)
     ret,th = cv2.threshold(blur,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
-    kernel = np.ones((3,3),np.uint8)
-    for o_iter in range(1,5):
-        opening = cv2.morphologyEx(th,cv2.MORPH_OPEN,kernel, iterations = o_iter)
-    for s_iter in range(1,2):
-        sure_bg = cv2.dilate(opening,kernel,iterations= s_iter)
-        dist_transform = cv2.distanceTransform(opening,cv2.DIST_L2,5)
+    skel = np.zeros(th.shape, np.uint8)
+    element = cv2.getStructuringElement(cv2.MORPH_CROSS, (7,7))
+    open = cv2.morphologyEx(th, cv2.MORPH_OPEN, element)
+    temp = cv2.subtract(th, open)
+    eroded = cv2.erode(th, element)
+    skel = cv2.bitwise_or(skel,temp)
+    erod = eroded.copy()
+    for s_iter in range(1,5):
+        sure_bg = cv2.dilate(erod,element,iterations= s_iter)
+        dist_transform = cv2.distanceTransform(erod,cv2.DIST_L2,5)
     for i in my_range:
         ret, sure_fg = cv2.threshold(dist_transform,i*dist_transform.max(),255,0)
         sure_fg = np.uint8(sure_fg)
@@ -30,6 +34,3 @@ def watershed(image):
         img[contours == -1] = [0]
     
     return contours
-
-
-#The end
