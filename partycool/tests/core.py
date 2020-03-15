@@ -181,6 +181,20 @@ def contour_capture(img,
     return contours
 
 
+def peri_avg(contours):
+    '''
+    Assistant function for determine the average perimeter from all contours
+    
+    contours: contours from the image
+    '''
+    peri_c_tot = 0
+    for c in contours:
+        peri_c_tot += cv2.arcLength(c, True)
+    avg_peri = peri_c_tot / len(contours)
+
+    return avg_peri
+
+
 #Main module for shape detection
 def shape_radar(contours, img, thresh_di = 1.09, thres_poly = 1.75):
     '''
@@ -192,7 +206,6 @@ def shape_radar(contours, img, thresh_di = 1.09, thres_poly = 1.75):
     img: dilated image from previous function
     '''
 
-    #Create plot, copy the img and convert into color scale
     plt.figure(figsize=(20,16))
     dilated_c = img.copy()
     dilated_c = cv2.cvtColor(dilated_c,cv2.COLOR_GRAY2RGB)
