@@ -1,33 +1,80 @@
-#Scale bar function
-def corner_detection(img):
-    """
-    This function is used to find the length pixel of the scale bar.
-    The imput should be just bottom part of the initial SEM image.
-    This function uses the return result of boundary_detection.
-    """
-    
-    def dilated_image(img,sigma):
-    '''filtering regional maxima to find bright features by using gaussian filter and reconstruction
-    simga: standard deviation for Gaussian kernel '''
-    # Convert to float: Important for subtraction later which won't work with uint8
-    img = gaussian_filter(img, sigma)
+# Image pretreatment
+def boundary_detection(img, thres = 20):
+        '''
+        thres: threshold to distinguish the scale bar background with particle background by grey scale
+        for now only work for SEM img, needs update if apply to different imgs
+        scan from upper to bottom, also needs update if need scan from left to right
+        
+        img: input image in gray scale
+        thres: threshold for contrast of distinguishing the boundary, i.e larger thres means higher contrast for boundary
+        '''
+        mode_list = []
+        for line in range(len(img)):
+            mode = stats.mode(img[line])
+            mode_list.append(int(mode[0]))
 
-    seed = np.copy(img)
-    seed[1:-1, 1:-1] = img.min()
-    mask = img
+            if line >= 1:
+                mode_mean = mean(mode_list)
+                if mode_mean - int(mode[0]) >= thres:
+                    boundary = line
+                    break
 
-    dilated = reconstruction(seed, mask, method='dilation')
-    return dilated
+        return boundary
+
+#Scale bar detection and calculation
+def corner_detection(img, actual_len):
+    """
+    This function is used to find the length of each pixel in nm.
+    The unit of the output length_each_pixel is nm
     
+    img: input image in gray scale
+    actual_len: real length in micrometer
+    """ 
+    
+    def dilated_image(img,sigma=1):
+        """
+        filtering regional maxima to find bright features by 
+        using gaussian filter and reconstruction
+        simga: standard deviation for Gaussian kernel 
+        """
+        # Convert to float: Important for subtraction later which won't work with uint8
+        img = gaussian_filter(img, sigma)
+        seed = np.copy(img, sigma)
+        seed[1:-1, 1:-1] = img.min()
+        mask = img
+
+        dilated = reconstruction(seed, mask, method='dilation')
+        return dilated
+    
+    actual_len = actual_len*1000
     height = img.shape[0]
     width = img.shape[1]
     #find the bottom part of the SEM image. Here we used the return refunction 
-    ime = img[boundary_detection(dilated_image(img,1)): , int(width/2): ]
+    ime = img[boundary_detection(dilated_image(img,1)): , : ]
+    
+    # find the smallest area of interest
+    boundary_v = []
+    thres = 100
+    for i in range(ime.shape[1]):
+        if ime[:,i][0] > thres:
+            boundary_v.append(i)
+    
+    #determine the smaller one of the scale bar region
+    ime = img[boundary_detection(dilated_image(img,1)): , boundary_v[-1]+10: ]
+    
+    boundary_h = []
+    for i in range(ime.shape[0]):
+        if ime[i,:][0] > thres:
+            boundary_h.append(i)
+    ime = img[boundary_detection(dilated_image(img,1)):boundary_detection(dilated_image(img,1))+boundary_h[0] , boundary_v[-1]+10: ]
     
     tform = AffineTransform()
     image = warp(ime,tform.inverse)
     coords = corner_peaks(corner_harris(image))
     coords_subpix = corner_subpix(image, coords)
+    
+    #get the length of the scale bar
+    #length_scale_bar = abs(coords[0][1] - coords[1][1])
     
     scales = []
     threshold = 500
@@ -53,47 +100,29 @@ def corner_detection(img):
             else:
                 continue
         if n_count == 1:
-            scalebar.append((scales[i][0], scales[i][1]))
+            scalebar.append(scales[i][1])
         else:
             continue
-    #get the length of the scale bar
-    #length_scale_bar = abs(coords[0][1] - coords[1][1])
-    #plot
-    fig, ax = plt.subplots(figsize=(15,15))
-    ax.imshow(image, cmap=plt.cm.gray)
-    ax.plot(coords[:, 1], coords[:, 0], color='cyan', marker='o',
-            linestyle='None', markersize=6)
-    ax.plot(coords_subpix[:, 1], coords_subpix[:, 0], '+r', markersize=10)
-    plt.show()
-    return scalebar
+    
+    for i in range(len(scalebar)):
+        num = scalebar.count(scalebar[i])
+        if num >= 2:
+            final_scale = scalebar[i]
+        else:
+            continue
+    
+    length_each_pixel = actual_len/final_scale
+    
+    return length_each_pixel
 
-#Needed: Scale bar output -- output a number for the back calculation from pixel length to real length/area
-
-
-#Img pretreatment for contours
-def boundary_detection(img, thres = 20):
-    '''
-    thres: threshold to distinguish the scale bar background with particle background by grey scale
-    for now only work for SEM img, needs update if apply to different imgs
-    scan from upper to bottom, also needs update if need scan from left to right
-    '''
-    mode_list = []
-    for line in range(len(img)):
-        mode = stats.mode(img[line])
-        mode_list.append(int(mode[0]))
-        
-        if line >= 1:
-            mode_mean = mean(mode_list)
-            if mode_mean - int(mode[0]) >= thres:
-                boundary = line
-                break
-        
-    return boundary
-
-
-def img_cutter(img, thres = 20):
+#Image read and contour capture module
+def img_pread(img, thres = 20, cut = True):
     '''
     Pretreatment for the picture to get a dilated and boundary cutted image
+    
+    img: input image in gray scale
+    thres: threshold for contrast distinguishing the boundary
+    cut: boolean value to set if the img be cutted
     '''
     #Pretreatment for the boundary detection
     image = img
@@ -103,218 +132,105 @@ def img_cutter(img, thres = 20):
     mask = image
     dilated = reconstruction(seed, mask, method='dilation')
     
-    image = mask - dilated
-    bound = boundary_detection(dilated)
-    img_c = image[:bound,:]
-    img_c = img_c.astype(np.uint8)
+    if cut == True:
+        image = mask - dilated
+        bound = boundary_detection(dilated)
+        img_c = image[:bound,:]
+        img_c = img_c.astype(np.uint8)
+    else:
+        img_c = image
     
     return img_c
 
 
-#Contour detection and analysis module
-#Will be replaced by the watershed function
 def contour_capture(img, 
-                    #kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(9,9)), 
-                    noise_factor = 4,
+                    noise_factor = 0.25,
                     thresh_method = cv2.THRESH_BINARY,
-                    area_thresh = 500):
+                    area_thresh = 300):
     '''
     The function captures the contours from the given imgs
-    Returns contours and dilated img
+    Returns contours
+    
+    img: input image in gray scale
+    noise_factor: factor used to set threshold for the threshold function
+    thresh_method: please refer to cv2.threshold
+    area_thresh: threshold to ignore noise contours
     '''
-    #img dilation
-    #dilated = cv2.dilate(img, kernel)
-    _, threshold = cv2.threshold(img, img.max()/4, img.max(), thresh_method)
+    _, threshold = cv2.threshold(img, img.max() * noise_factor, img.max(), thresh_method)
     contours, _=cv2.findContours(threshold, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     contours = [contour for contour in contours if cv2.contourArea(contour) >= area_thresh]
     
-    return contours, img
+    return contours
 
 
-def contour_summary(contours, hull = False):
-    '''
-    The function returns a summary based on the contour calculation
-    '''
-    contour_list = []
-    
-    for cnt in contours:
-        '''
-        More: add information for particle segmentation and area calculation
-        output: shapetype, particle #, area of individuals
-        '''
-        if hull == False:
-            contour_list.append(len(cnt))
-        elif hull == True:
-            approx = cv2.approxPolyDP(cnt, 0.01 * cv2.arcLength(cnt, True), True) #Tunning needed for the coeffecients
-            hull = cv2.convexHull(approx)
-            contour_list.append(len(hull))
-    
-    print(len(contour_list))
-    plt.hist(contour_list)
-    
-    return
-
-
-#Shape detection using a simple decision tree model
-def shape_radar(contours, dilated, noise_factor = 4, thresh_mono = 30, thresh_di = 90, thres_poly = 130):
+#Main module for shape detection
+def shape_radar(contours, img, thresh_di = 1.09, thres_poly = 1.75):
     '''
     Takes input from contour_capture
     return a annotated img from setted threshold
-    '''
+    Model tunning is possible by using different predictions provided below
     
+    contours: contours from the image
+    img: dilated image from previous function
+    '''
+
     #Create plot, copy the img and convert into color scale
     plt.figure(figsize=(20,16))
-    dilated_c = dilated.copy()
+    dilated_c = img.copy()
     dilated_c = cv2.cvtColor(dilated_c,cv2.COLOR_GRAY2RGB)
+    avg_c = peri_avg(contours)
     
-    #Ratio between area and length of contours
-    #Ratio between area and cv2.arcLength(c, True)
-    #multiple predictors
     for c in contours:
         rect = cv2.minAreaRect(c)
         box = cv2.boxPoints(rect)
         box = np.int0(box)
         
+        #Optional predictors
         area = cv2.contourArea(c)
-        r_area_len = round((area/len(c)),1)
+        len_c = round(cv2.arcLength(c, True), 1)
+        r_area_len = round((area/len_c),1)
+        r_peri = len_c / avg_c
 
-        #approx = cv2.approxPolyDP(c, 0.05 * cv2.arcLength(c, True), True) #Tunning needed for the coeffecients
-        #hull = cv2.convexHull(approx)
-        #cv2.drawContours(dilated_c, hull, -1, (100), 5)
-        #print(len(hull))
-        if len(c) <= thresh_di and len(c) > thresh_mono:
-            if area > 1800:
-                cv2.putText(dilated_c, 'dimer', (c[0][0][0], c[0][0][1]), cv2.FONT_HERSHEY_SIMPLEX,1,(255, 0, 0), 3) #Use str(len(c)) instead of text
+        if r_peri <= thresh_di:
+            cv2.drawContours(dilated_c, [box], 0, (255, 255, 255), 3)
+        elif r_peri > thresh_di and r_peri <= thres_poly:
+            if area > 900:
+                cv2.putText(dilated_c, 'dimer', (c[0][0][0], c[0][0][1]), cv2.FONT_HERSHEY_SIMPLEX,1,(255, 0, 0), 3)
                 cv2.drawContours(dilated_c, [box], 0, (255, 0, 0), 3)
             else:
-                #cv2.putText(dilated_c, str(len(c)), (c[0][0][0], c[0][0][1]), cv2.FONT_HERSHEY_SIMPLEX,1,(255,255,255), 5) #Use str(len(c)) instead of text
                 cv2.drawContours(dilated_c, [box], 0, (255, 255, 255), 3)
-        elif len(c) > thresh_di and len(c) <= thres_poly:
-            cv2.putText(dilated_c, 'dimer', (c[0][0][0], c[0][0][1]), cv2.FONT_HERSHEY_SIMPLEX,1,(255, 0, 0), 3) #Use str(len(c)) instead of text
-            cv2.drawContours(dilated_c, [box], 0, (255, 0, 0), 3)
-        elif len(c) > thres_poly:
-            #Predictor from ratio
-            if r_area_len > 16.5:
-                cv2.putText(dilated_c, 'polymer', (c[0][0][0], c[0][0][1]), cv2.FONT_HERSHEY_SIMPLEX,1,(0, 255, 0), 3) #Use str(len(c)) instead of text
-                cv2.drawContours(dilated_c, [box], 0, (0, 255, 0), 3)
-            else:
-                cv2.putText(dilated_c, 'dimer', (c[0][0][0], c[0][0][1]), cv2.FONT_HERSHEY_SIMPLEX,1,(255, 0, 0), 3) #Use str(len(c)) instead of text
-                cv2.drawContours(dilated_c, [box], 0, (255, 0, 0), 3)
+        elif r_peri > thres_poly:
+            cv2.putText(dilated_c, 'polymer', (c[0][0][0], c[0][0][1]), cv2.FONT_HERSHEY_SIMPLEX,1,(0, 255, 0), 3) 
+            cv2.drawContours(dilated_c, [box], 0, (0, 255, 0), 3)
 
     return dilated_c
 
 
-#Static summary module
-def area_summary(contours):
-    areas = [cv2.contourArea(contour) for contour in contours]
-    #output of area will be a 2D array
+# Watershed for distinguish shapes -- beta 
+def watershed(image):
+    my_range = np.arange(0.0, 0.7, 0.1)
+    img_3channel = cv2.imread(image, 1)
+    img = cv2.imread(image, 0)
+    blur = cv2.GaussianBlur(img,(5,5),0)
+    ret,th = cv2.threshold(blur,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+    skel = np.zeros(th.shape, np.uint8)
+    element = cv2.getStructuringElement(cv2.MORPH_CROSS, (7,7))
+    open = cv2.morphologyEx(th, cv2.MORPH_OPEN, element)
+    temp = cv2.subtract(th, open)
+    eroded = cv2.erode(th, element)
+    skel = cv2.bitwise_or(skel,temp)
+    erod = eroded.copy()
+    for s_iter in range(1,5):
+        sure_bg = cv2.dilate(erod,element,iterations= s_iter)
+        dist_transform = cv2.distanceTransform(erod,cv2.DIST_L2,5)
+    for i in my_range:
+        ret, sure_fg = cv2.threshold(dist_transform,i*dist_transform.max(),255,0)
+        sure_fg = np.uint8(sure_fg)
+        unknown = cv2.subtract(sure_bg,sure_fg)
+        ret, contours = cv2.connectedComponents(sure_fg)
+        contours = contours+1
+        contours[unknown==255] = 0
+        contours = cv2.watershed(img_3channel ,contours)
+        img[contours == -1] = [0]
     
-    #plotting function
-    plt.figure(figsize=(8, 6))
-    _ = plt.hist(areas, bins=40, color='gray')
-    plt.xlabel('Area of Au NRs (pixel^2)', fontsize=16)
-    plt.ylabel('Count', fontsize=16)
-    plt.xticks(fontsize=14)
-    plt.yticks(fontsize=14)
-    print("Total # of Au Particles :\n", len(areas))
-    
-    return
-
-
-def aspect_ratio(contours):
-    aspectratio = []
-    #Get rect area from the contours
-    for i in range(0,len(contours)):
-        x,y,w,h = cv2.boundingRect(contours[i])
-        aspect_ratio = float(w)/h
-        aspectratio.append(aspect_ratio)
-
-    #plotting the aspect ratio of Au NRs
-    plt.figure(figsize=(8, 6))
-    _ = plt.hist(aspectratio, bins=40, color='gray')
-    plt.xlabel('Aspect Ratio of Au NRs', fontsize=16)
-    plt.ylabel('Count', fontsize=16)
-    plt.xticks(fontsize=14)
-    plt.yticks(fontsize=14)
-    print("Total # of Au Particles :\n", len(aspectratio))
-    
-    return
-
-
-def angle_summary(contours):
-    #calculating angle of Au NRs (from Maxim page)
-    dictionary = OrderedDict()
-    com_arr = np.empty((0, 2))
-    angles = []
-    for cnt in contours:
-        try:
-            (com), _, angle = cv2.fitEllipse(cnt)
-        except:
-            continue
-        com = np.array(com)
-        com_arr = np.append(com_arr, [com], axis=0)
-        angles.append(angle)
-    
-    #Plotting functions
-    plt.figure(figsize=(8, 6))
-    _ = plt.hist(angles, bins=40, color='gray')
-    plt.xlabel('Au Particles Orientation (°)', fontsize=16)
-    plt.ylabel('Count', fontsize=16)
-    plt.xticks(fontsize=14)
-    plt.yticks(fontsize=14)
-    print("Total # of Au Particles :\n", len(angles))
-    
-    return
-
-
-#Overall summary--Updated needed for adjustment according to the length of scale bar
-def particle_summary(contours, thresh_mono = 30, thresh_di = 90, thres_poly = 130):
-    '''
-    returns a dataframe that summarized the particle information
-    '''
-    
-    loc_x = []
-    loc_y = []
-    aspect_r = []
-    area_l = []
-    arealen_r = []
-    category_l = []
-    
-    for c in contours:
-        x,y,w,h = cv2.boundingRect(c)
-        aspect_ratio = float(w)/h
-        area = cv2.contourArea(c)
-        r_area_len = round((area/len(c)),1)
-
-        category = ''
-        
-        if len(c) <= thresh_di and len(c) > thresh_mono:
-            if area > 1800:
-                category = 'dimer'
-            else:
-                category = 'monomer'
-        elif len(c) > thresh_di and len(c) <= thres_poly:
-            category = 'dimer'
-        elif len(c) > thres_poly:
-            if r_area_len > 16.5:
-                category = 'poly'
-            else:
-                category = 'dimer'
-
-        loc_x.append(x)
-        loc_y.append(y)
-        aspect_r.append(aspect_ratio)
-        area_l.append(area)
-        arealen_r.append(r_area_len)
-        category_l.append(category)
-
-    result_dict = {'x' : loc_x, 
-                   'y' : loc_y,
-                   'aspect_ratio' : aspect_r,
-                   'area' : area_l,
-                   'areacontour_ratio' : arealen_r,
-                   'category' : category_l}
-                
-    result_df = pd.DataFrame.from_dict(result_dict)
-    
-    return result_df
+    return contours
