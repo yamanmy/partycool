@@ -72,7 +72,7 @@ result_cnt = partycool.contour_capture(test_filtered)
 def test_shape_radar():
     result = partycool.shape_radar(result_cnt, test)
     
-    assert len(result) == 218, 'Wrong output'
+    assert len(result) == 2188, 'Wrong output'
     
     return
 
