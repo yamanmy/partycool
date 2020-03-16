@@ -11,6 +11,8 @@ from statistics import mean
 from collections import OrderedDict
 import plotly.graph_objects as go
 import pandas as pd
+import plotly
+
 
 #Optional modules
 from skimage.feature import corner_harris, corner_subpix, corner_peaks
