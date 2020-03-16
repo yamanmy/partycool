@@ -1,22 +1,6 @@
-import numpy as np
 import cv2
-import skimage
-import math
-from skimage import io
-import matplotlib.pyplot as plt
-from scipy.ndimage import gaussian_filter
-from skimage.morphology import reconstruction
-from scipy import stats
-from statistics import mean 
-from collections import OrderedDict
-import plotly.graph_objects as go
-import pandas as pd
+import partycool
 
-#Optional modules
-from skimage.feature import corner_harris, corner_subpix, corner_peaks
-from skimage.transform import warp, AffineTransform
-
-from partycool import *
 
 #Testing database
 test = cv2.imread('../../example_images/sem_1.jpg',0)
@@ -52,11 +36,12 @@ def test_img_pread():
 
 #Testing filetered dataframe used for testing the following functions
 
-test_filtered = partycool.img_pread(test)
+
 
 #Test contour capture function
 
 def test_contour_capture():
+    test_filtered = partycool.img_pread(test)
     result_cnt = partycool.contour_capture(test_filtered)
     
     assert len(result_cnt) == 316, 'wrong output'
@@ -65,11 +50,13 @@ def test_contour_capture():
 
 #Testing dataframe from contour capture for the following functions
 
-result_cnt = partycool.contour_capture(test_filtered)
+
 
 #Test shape radar function
 
 def test_shape_radar():
+    test_filtered = partycool.img_pread(test)
+    result_cnt = partycool.contour_capture(test_filtered)
     result = partycool.shape_radar(result_cnt, test)
     
     assert len(result) == 2188, 'Wrong output'
@@ -79,6 +66,8 @@ def test_shape_radar():
 #Test the wrapping function of partycool summary
 
 def test_partycool_summary():
+    test_filtered = partycool.img_pread(test)
+    result_cnt = partycool.contour_capture(test_filtered)
     result_df = partycool.partycool_summary(result_cnt)
     
     assert len(result_df.columns) == 5 or len(result_df.columns) == 8, 'wrong output dataframe!'
@@ -87,9 +76,9 @@ def test_partycool_summary():
 
 #Test the watershed function
 
-test_img = '../../example_images/sem_1.jpg'
 
 def test_watershed():
+    test_img = '../../example_images/sem_1.jpg'
     result = partycool.watershed(test_img)
     
     assert result.size == 6721536, "Wrong output size of the watershed result matrix"
