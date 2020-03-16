@@ -85,13 +85,6 @@ def test_partycool_summary():
     
     return
 
-#Test the wrapping function of partycool plots .....
-
-"
-.......
-"
-
-
 #Test the watershed function
 
 test_img = '../../example_images/sem_1.jpg'
