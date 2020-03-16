@@ -145,7 +145,6 @@ def img_pread(img, thres = 20, cut = True):
 
 def contour_capture(img, 
                     noise_factor = 0.25,
-                    thresh_method = cv2.THRESH_BINARY,
                     area_thresh = 300):
     '''
     The function captures the contours from the given imgs
@@ -156,7 +155,7 @@ def contour_capture(img,
     thresh_method: please refer to cv2.threshold
     area_thresh: threshold to ignore noise contours
     '''
-    _, threshold = cv2.threshold(img, img.max() * noise_factor, img.max(), thresh_method)
+    _, threshold = cv2.threshold(img, img.max() * noise_factor, img.max(), cv2.THRESH_BINARY)
     contours, _=cv2.findContours(threshold, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     contours = [contour for contour in contours if cv2.contourArea(contour) >= area_thresh]
     

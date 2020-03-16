@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="partycool", # Replace with your own username
-    version="0.0.1",
+    version="0.0.2",
     author="Muammer yaman, Ximin Hu, Margherita Taddei, Yangwei Shi",
     author_email="author@example.com",
     description="Particle Size Analysis Package for All Microscopy Images",
