@@ -15,3 +15,4 @@ import pandas as pd
 #Optional modules
 from skimage.feature import corner_harris, corner_subpix, corner_peaks
 from skimage.transform import warp, AffineTransform
+from plotly.subplots import make_subplots

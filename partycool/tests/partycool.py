@@ -11,6 +11,7 @@ from statistics import mean
 from collections import OrderedDict
 import plotly.graph_objects as go
 import pandas as pd
+from plotly.subplots import make_subplots
 
 #Optional modules
 from skimage.feature import corner_harris, corner_subpix, corner_peaks
@@ -316,9 +317,9 @@ def partycool_summary(contours, convert_factor = 0, enable_poly = True, thresh_d
     aspect_ratio = []
     for i in range(len(aspect_r)):
         if aspect_r[i] < 1:
-            aspect_ratio.append(1/aspect_r[i])
+            aspect_ratio.append(float('%.2g' % (1/aspect_r[i])))
         else:
-            aspect_ratio.append(aspect_r[i])
+            aspect_ratio.append(float('%.2g' % aspect_r[i]))
     #Radius calculation
     #Conversion part
     if convert_factor != 0:
@@ -355,7 +356,7 @@ def partycool_summary(contours, convert_factor = 0, enable_poly = True, thresh_d
     return result_df
 
 
-def partycool_plots(dataframe, interactive = False):
+def partycool_plots(df, interactive = False):
     '''
     dataframe: df from partycool_summary
     aspect: what user want to see
