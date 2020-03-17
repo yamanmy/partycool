@@ -9,8 +9,7 @@ branches:
     only:
         - master
 
-cache:
-  bundler: true
+ignore:
   directories:
     - partycool/partycool/tests/*
     - partycool/partycool/trail/*
