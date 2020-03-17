@@ -31,7 +31,8 @@ install:
 
 # a list of commands to run before the main script
 before_script:
-    - flake8 partycool
+    - [flake8] partycool
+    exclude = partycool/tests, partycool/trail
 
 # the actual commands to run
 script:
