@@ -51,7 +51,9 @@ pip install partycool
 ### Software dependencies
 * Python3
 ### Preview of app 
+
 * Categories of nanoparticles
 <img src="/example_images/pie.png" width="450">
+
 * Statistics distribution
 <img src="/example_images/noninteractive.png" width="400">
