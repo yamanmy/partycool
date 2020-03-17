@@ -11,8 +11,8 @@ branches:
 
 ignore:
   directories:
-    - partycool/partycool/tests/*
-    - partycool/partycool/trail/*
+    - partycool/tests/*
+    - partycool/trail/*
     
     
 # commands to prepare the conda install - download the latest conda
