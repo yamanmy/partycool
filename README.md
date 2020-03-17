@@ -74,25 +74,21 @@ or package.
 The `boundary_detection` function is used to to distinguish the scale bar background with particle backgroundand uses the OpenCV threshold operatio to distinguish the scale bar background with particle background in the SEM image.
 The `corner_detection` function is used to find the length of each pixel in nm. It uses the `dilated_image` function to find the brighter feautures corrisponding to the particle via the gaussian filter of OpenCV.
 The image is then treated with the `img_pread` function that gives out the dilated and boundary cutted image.
-"
-screenshot1
-"
+
+<img src="/example_images/img_pread_output.png">
 
 Then, the `contour_capture` function captures the contours from the given imgage and gives the average perimeters of the particles through `peri_avg` function.
 The `shape_radar` function unify the result from `contour_capture` to the filtered image and gives as an output the image showing the size distribution of the particles. Monomers are shown in white, dimers in red and polymers in green.
 
-"
-screen shot2
-"
+<img src="/example_images/countour_capture_output.png">
 
 The `partycool_summary` gives as output the final dataframe containing all the size analysis of the particles in the input image.
 The `partycool_plots` gives the size analysis information in form of interactive plots using histograms and pie plot from Plotly.
 
 At the end, we define the `watershed` function that will be used to distinguish close nanoparticles into monomers, dimers or polymers
 
-"
-screenshot 3
-"
+<img src="/example_images/watershed_output.png">
+
 ### Preview of app 
 
 * Categories of nanoparticles
