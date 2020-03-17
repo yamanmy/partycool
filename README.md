@@ -1,5 +1,5 @@
 # Partycool <img src="/example_images/partycool_super_smaller.jpg">
-## Particle Size Analysis Package for SEM Microscopy Images 
+## Particle Size Analysis Package for Scanning Electron Microscopy Images 
 Partycool is a package used to analyze nanoparticles size in details directly from electron microscopy images!
 
 To use it just import the partycool package and upload your SEM image and you will get a partycool summary and interactive plots showing the size feautures of your particles.
@@ -106,6 +106,7 @@ pip install partycool
 ```
 from partycool import *
 ```
+
 ### Project Data
 
 The data used to the develop the code are SEM images of gold nanoparticles on protein substrate taken from the Ginger Lab at the University of Washington. In the `example_images` repository we provide a good collection of SEM, TEM, AFM, opticaland dark field images that can be used by the user.
