@@ -26,7 +26,7 @@ install:
 
 # a list of commands to run before the main script
 before_script:
-    - flake8 partycool/partycool/tests/test_partycool.py
+    - flake8 partycool/partycool/tests
 
 # the actual commands to run
 script:
