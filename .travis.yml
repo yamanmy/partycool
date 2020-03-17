@@ -8,9 +8,9 @@ python:
 branches:
     only:
         - master
-    ignore:
-        - partycool/partycool/tests/*
-        - partycool/partycool/trail/*
+ignore:
+    - partycool/partycool/tests/*
+    - partycool/partycool/trail/*
     
     
 # commands to prepare the conda install - download the latest conda
