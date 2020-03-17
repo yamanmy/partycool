@@ -115,13 +115,13 @@ The data used to the develop the code are SEM images of gold nanoparticles on pr
 
 All the function in the `partycool` code were tested using nosetests. The testing files are found the `tests` repository and each function is tested with the `test_partycool.py` using assert statements.
 
-"
+'''
 .......
 ----------------------------------------------------------------------
 Ran 7 tests in 64.733s
 
 OK
-"
+'''
 
 
 ### Continuous integration 
