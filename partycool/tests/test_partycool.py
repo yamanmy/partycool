@@ -1,5 +1,5 @@
 import cv2
-import partycool
+from partycool import partycool
 
 
 #Testing database
