@@ -3,8 +3,8 @@
 This package can be used to analyze the particle size from microscopy images such as FEM, SEM images and optical microscopy.
 We will try to implement also the recignition of AFM images through Machine Learning.
 In addition, there is a visualization tools that can be used to plot the size distribution of the particles.
-#### Contributers: Muammer yaman, Ximin Hu, Margherita Taddei, Yangwei Shi
-#### Release date:
+#### Contributers: Muammer Yaman, Ximin Hu, Margherita Taddei, Yangwei Shi
+#### Release date: 2020-03-16
 
 ## Organization of the project
 The project has the following structure:
@@ -53,7 +53,7 @@ pip install partycool
 ### Preview of app 
 
 * Categories of nanoparticles
-<img src="/example_images/pie.png" width="450">
+<img src="/example_images/pie.png" width="600">
 
 * Statistics distribution
-<img src="/example_images/noninteractive.png" width="400">
+<img src="/example_images/noninteractive.png" width="600">
