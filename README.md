@@ -51,5 +51,5 @@ pip install partycool
 ### Software dependencies
 * Python3
 ### Preview of app
-<img align="center" src="/example_images/distribution.png" width="50"> <img align="center" src="/example_images/noninteractive.png" width="50">
-<img src="/example_images/pie.png" width="50">
+<img align="center" src="/example_images/distribution.png" width="300"> <img align="center" src="/example_images/noninteractive.png" width="300">
+<img src="/example_images/pie.png" width="300">
