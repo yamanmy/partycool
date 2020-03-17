@@ -9,10 +9,7 @@ branches:
     only:
         - master
 
-ignore:
- - partycool/tests/*
- - partycool/trail/*
-    
+
     
 # commands to prepare the conda install - download the latest conda
 # and install it and add to path
