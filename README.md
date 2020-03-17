@@ -25,20 +25,14 @@ The project has the following structure:
             |- test_partycool.py
             |- partycool.py           
          |- trial/
-            |- .gitignore
-            |- Pytorch-tutorial.ipynb
-            |- Shape-detection.ipynb
-            |- image_segmentation.ipynb
-            |- .gitignore
             |- partycool.ipynb
-            |- region_of_interest_scalebar.ipynb
-            |- sem_1.jpg
             |- watershed.ipynb
-            |- Pytorch-partycool.ipynb
-            |- Shape_first_trail.ipynb                       
+            |- Pytorch-partycool.ipynb    
+            |- *.ipynb
       |- doc/
          |- technology_review.pdf
-         |- partycool.docx       
+         |- partycool.docx
+         |- Presentation.pptx
       |- example_images/
          |- README.md
          |- watershed_trail/
@@ -50,9 +44,9 @@ The project has the following structure:
             |- sem/
             |- afm/
       |- example/
-         |- user_case.ipynb           
+         |- user_case.ipynb
+         |- infonanoparticle.html
       |- .travis.yml
-      |- .gitignore
       |- environment.yml
       |- LICENSE
       |- setup.py
@@ -98,14 +92,20 @@ At the end, we define the `watershed` function that will be used to distinguish 
 <img src="/example_images/noninteractivenew.png" width="600">
 
 
-### Software dependencies
-* Python3
+### Major dependencies
+* Python >= 3.6
+   - OpenCV
+   - Skimage
+   - Plotly
 
-### How to install
+### How to install & import
 ```
 pip install partycool
 ```
 
+```
+from partycool import *
+```
 ### Project Data
 
 The data used to the develop the code are SEM images of gold nanoparticles on protein substrate taken from the Ginger Lab at the University of Washington. In the `example_images` repository we provide a good collection of SEM, TEM, AFM, opticaland dark field images that can be used by the user.
@@ -115,13 +115,17 @@ The data used to the develop the code are SEM images of gold nanoparticles on pr
 All the function in the `partycool` code were tested using nosetests. The testing files are found the `tests` repository and each function is tested with the `test_partycool.py` using assert statements.
 
 "
-paste the result of nosetests
+.......
+----------------------------------------------------------------------
+Ran 7 tests in 64.733s
+
+OK
 "
 
 
 ### Continuous integration 
 
-Travis CI (?)
+Travis CI is deployed for continuous integration, code style checked through flake8
 
 ### Licensing 
 
