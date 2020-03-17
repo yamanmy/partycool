@@ -27,10 +27,7 @@ The project has the following structure:
             |- __init__.py
             |- test_partycool.py
             |- partycool.py           
-         |- trial/
-            |- partycool.ipynb
-            |- watershed.ipynb
-            |- Pytorch-partycool.ipynb    
+         |- trial/  
             |- *.ipynb
       |- doc/
          |- technology_review.pdf
