@@ -1,6 +1,6 @@
 # Partycool <img src="/example_images/partycool_super_smaller.jpg">
 
-[![Build Status](https://travis-ci.com/yamanmy/partycool.svg?branch=master)
+![Build Status](https://travis-ci.com/yamanmy/partycool.svg?branch=master)
 
 ## Particle Size Analysis Package for Scanning Electron Microscopy Images 
 Partycool is a package used to analyze nanoparticles size in details directly from electron microscopy images!
