@@ -95,7 +95,7 @@ At the end, we define the `watershed` function that will be used to distinguish 
 <img src="/example_images/pie.png" width="600">
 
 * Statistics distribution
-<img src="/example_images/noninteractive.png" width="600">
+<img src="/example_images/noninteractivenew.png" width="600">
 
 
 ### Software dependencies
